@@ -14,9 +14,9 @@
     <bytecodeTargetLevel>
       <module name="eureka" target="1.8" />
       <module name="Parent" target="1.7" />
-      <module name="register" target="1.6" />
-      <module name="scdConsumer" target="1.6" />
-      <module name="scdProvider" target="1.6" />
+      <module name="register" target="1.7" />
+      <module name="scdConsumer" target="1.7" />
+      <module name="scdProvider" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
