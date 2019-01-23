@@ -1,10 +1,11 @@
 package com.provider.demo.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.provider.demo.entity.Country;
+import com.provider.demo.service.UserManager;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +15,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/")
 public class ProviderController {
+    @Autowired
+    UserManager userManager;
     @RequestMapping("/index")
     public String index() {
         return "《疯狂的石头》";
@@ -34,5 +37,9 @@ public class ProviderController {
             result.put("body", ls);
         }
         return result;
+    }
+    @RequestMapping(value="Country/{cid}",method = RequestMethod.GET)
+    public Country readCountryByCid(@PathVariable Integer cid){
+        return userManager.getCountryByCid(cid);
     }
 }
