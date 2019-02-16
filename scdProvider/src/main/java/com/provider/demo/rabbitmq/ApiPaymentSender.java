@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * 订单发送者
+ * 订单发送者：通过交换机生产消息到队列
  */
 @Component
 public class ApiPaymentSender {

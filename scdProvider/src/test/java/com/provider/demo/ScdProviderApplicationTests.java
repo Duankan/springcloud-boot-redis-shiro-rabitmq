@@ -1,6 +1,8 @@
 package com.provider.demo;
 
+import com.provider.demo.dao.JpaUsersDao;
 import com.provider.demo.entity.Country;
+import com.provider.demo.entity.JpaEntity;
 import com.provider.demo.rabbitmq.ApiCoreSender;
 import com.provider.demo.rabbitmq.ApiPaymentSender;
 import com.provider.demo.rabbitmq.PaymentNotifySender;
@@ -15,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import redis.clients.jedis.Jedis;
+
 
 @MapperScan("com.provider.demo.dao") //扫描的mapper
 @RunWith(SpringRunner.class)
@@ -31,6 +34,8 @@ public class ScdProviderApplicationTests {
 	private ApiCoreSender apiCoreSender;
 	@Autowired
 	private ApiPaymentSender apiPaymentSender;
+	@Autowired
+	private JpaUsersDao jpaUsersDao;
 	@Test
 	public void contextLoads() {
 	}
@@ -55,6 +60,18 @@ public class ScdProviderApplicationTests {
 		apiPaymentSender.order("订单管理!");
 		apiPaymentSender.orderQuery("订单信息查询!");
 		apiPaymentSender.orderDetailQuery("查询订单详细信息!");
+	}
+	@Test
+	public void JpaTest(){
+//		JpaEntity entity=new JpaEntity();
+////		entity.setId(6);
+//		entity.setUsername("jpa");
+//		entity.setPassword("11111");
+//		jpaUsersDao.save(entity);
+//		List<JpaEntity> entities=jpaUsersDao.findByUsername("dankin");
+//		logger.info(entities.toString());
+		JpaEntity entity=jpaUsersDao.annotation("dankin");
+		logger.info(">>> "+entity.toString());
 	}
 }
 

@@ -16,7 +16,7 @@ public class PaymentNotifySender {
     private AmqpTemplate rabbitTemplate;
 
     public void sender(String msg){
-        logger.info("notify.payment send message: "+msg);
         rabbitTemplate.convertAndSend("notify.payment", msg);
+        logger.info("notify.payment send message: "+msg);
     }
 }

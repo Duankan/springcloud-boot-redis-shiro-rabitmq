@@ -7,7 +7,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 /**
- * 接受者
+ * mq消费者：监听队列，实时消费所监听的队列
  */
 @Component
 public class ApiReceive {
