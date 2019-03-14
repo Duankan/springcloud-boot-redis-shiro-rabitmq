@@ -12,7 +12,13 @@ public class ScdConsumerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ScdConsumerApplication.class, args);
 	}
-	//启用负载均衡，默认算法是轮询
+
+	/**
+	 * @return
+	 * @author dankin
+	 * @date 19年年前
+	 * @descr springcolud的rest模板，启用负载均衡，默认算法是轮询
+	 */
 	@LoadBalanced
 	@Bean
 	public RestTemplate restTemplate(){

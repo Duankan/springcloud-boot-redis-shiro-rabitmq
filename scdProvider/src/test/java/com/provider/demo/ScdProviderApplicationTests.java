@@ -15,9 +15,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.ObjectUtils;
 import redis.clients.jedis.Jedis;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @MapperScan("com.provider.demo.dao") //扫描的mapper
@@ -46,7 +58,7 @@ public class ScdProviderApplicationTests {
     public void redis() {
         Jedis jedis = new Jedis();
         jedis.set("springCloud", "springCloud");
-        logger.info(">>>redis的value:" + jedis.get("springCloud"));
+        logger.info("redis的value>>>" + jedis.get("springCloud"));
     }
 
     @Test
@@ -76,8 +88,31 @@ public class ScdProviderApplicationTests {
 //		jpaUsersDao.save(entity);
 //		List<JpaEntity> entities=jpaUsersDao.findByUsername("dankin");
 //		logger.info(entities.toString());
-        JpaEntity entity = jpaUsersDao.annotation("dankin");
-        logger.info(">>> " + entity.toString());
+//        JpaEntity entity = jpaUsersDao.annotation("dankin");
+//        logger.info(">>> " + entity.toString());
+        //测试jpa-Specification的复杂动态查询
+        final Map<String,Object> conditions=new HashMap<>();
+        conditions.put("username","dankin");
+        conditions.put("password","e10adc3949ba59abbe56e057f20f883e");
+        List<JpaEntity> list=jpaUsersDao.findAll(new Specification<JpaEntity>() {
+            @Override
+            public Predicate toPredicate(Root<JpaEntity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                Field[] fields=JpaEntity.class.getDeclaredFields();
+                List<Predicate> predicates=new ArrayList<>();
+                for (int i=0;i<fields.length;i++){
+                    fields[i].setAccessible(true);
+                    String name=fields[i].getName();
+                    if(conditions.containsKey(name)){
+                        if(ObjectUtils.isEmpty(conditions.get(name))){
+                            continue;
+                        }
+                        predicates.add(criteriaBuilder.like(root.<String>get(name),"%"+conditions.get(name)+"%"));
+                    }
+                }
+                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        });
+        logger.info("Specification查询结果>>>"+list);
     }
 
     @Test

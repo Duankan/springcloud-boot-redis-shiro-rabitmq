@@ -52,6 +52,7 @@
     </dependencies>
     <dependencyManagement>
         <dependencies>
+            <!--springcloud的预编译依赖（子项目的eureka会用到）-->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
